@@ -1,5 +1,6 @@
 import json
 from django.conf import settings
+from django.contrib import messages
 from django.utils.safestring import SafeString
 from django.contrib.gis.geos import GEOSGeometry
 from django.http import JsonResponse
@@ -42,6 +43,7 @@ class PlaceCreate(GoogleApiMixin, BaseCreateView):
         point.srid = 4326
         form.instance.geom = point
         form.save()
+        messages.success(self.request, 'Your point was  saved successfully!')
         return super().form_valid(form)
 
 
@@ -58,6 +60,7 @@ class PlaceUpdate(GoogleApiMixin, BaseUpdateView):
         point.srid = 4326
         form.instance.geom = point
         form.save()
+        messages.success(self.request, 'Your point was  updated successfully!')
         return super().form_valid(form)
 
 
@@ -83,6 +86,7 @@ class AreaCreate(GoogleApiMixin, BaseCreateView):
             pnt.srid = 4326
             form.instance.geom = pnt
             form.save()
+            messages.success(self.request, 'Your polygon was  saved successfully!')
             return JsonResponse({
                 'success': True,
                 'url': reverse('area-list'),
@@ -112,6 +116,7 @@ class AreaUpdate(GoogleApiMixin, BaseUpdateView):
             pnt.srid = 4326
             form.instance.geom = pnt
             form.save()
+            messages.success(self.request, 'Your polygon was  updated successfully!')
             return JsonResponse({
                 'success': True,
                 'url': reverse('area-list'),
@@ -141,6 +146,7 @@ class RouteCreate(GoogleApiMixin, BaseCreateView):
             pnt.srid = 4326
             form.instance.geom = pnt
             form.save()
+            messages.success(self.request, 'Your route was  saved successfully!')
             return JsonResponse({
                 'success': True,
                 'url': reverse('route-list'),
@@ -170,6 +176,7 @@ class RouteUpdate(GoogleApiMixin, BaseUpdateView):
             pnt.srid = 4326
             form.instance.geom = pnt
             form.save()
+            messages.success(self.request, 'Your route was  updated successfully!')
             return JsonResponse({
                 'success': True,
                 'url': reverse('route-list'),
