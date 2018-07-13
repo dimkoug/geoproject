@@ -1,0 +1,7 @@
+env
+public
+data
+settings_local.py
+__pycache__
+*.pyc
+debug.log

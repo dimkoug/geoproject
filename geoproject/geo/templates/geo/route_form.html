@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+{{ block.super }}
+
+<script>
+$(document).ready(function(){
+  var shape_coordinates = [];
+  var x = [] ;
+  var mapOptions = {
+    center: new google.maps.LatLng(37.950902,23.641103),
+    zoom: 12,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+
+  };
+  map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+  function addPoint(e) {
+      shape.setMap(map);
+      vertices= shape.getPath();
+      vertices.push(e.latLng);
+      shape_coordinates.push(e.latLng);
+  }
+
+  shape = new google.maps.Polyline({
+      editable:true,
+      strokeOpacity: 0.8,
+      strokeWeight: 1,
+      fillOpacity: 0.4
+  });
+  google.maps.event.addListener(map,'click',addPoint);
+
+  {% if form.instance.pk %}
+    shape.setOptions({ editable: false });
+    google.maps.event.clearListeners(map, 'click');
+      var geo = {{geom}};
+      for (var i = 0; i < geo.features.length; i++){
+        map.data.addGeoJson(geo.features[i]);
+      }
+      var bounds = new google.maps.LatLngBounds();
+    map.data.forEach(function(feature){
+      feature.getGeometry().forEachLatLng(function(latlng){
+         bounds.extend(latlng);
+      });
+    });
+    map.data.setStyle({
+      fillColor: '#f0f0f0'
+    });
+    map.fitBounds(bounds);
+
+    $('#reset').on('click', function(){
+      shape.setOptions({ editable: true });
+      google.maps.event.addListener(map,'click',addPoint);
+      if(map.data){
+        map.data.forEach(function (feature) {
+          map.data.remove(feature);
+        });
+      }
+    })
+  {% endif %}
+
+  $("#form").on('submit', function(e){
+    e.preventDefault();
+    if(typeof vertices != 'undefined'){
+      a=JSON.stringify(shape_coordinates);
+      var c=JSON.parse(a);
+      vertices.forEach(function(xy, i) {
+        x.push(xy.lng()+" "+xy.lat());
+      });
+      shape.setMap(map);
+      if(x.length>0){
+        return $.ajax({
+          {% if form.instance.pk %}
+            url: '{% url "route-update" form.instance.pk %}',
+          {% else %}
+            url: '.',
+          {% endif %}
+          type: 'POST',
+          data: {name: $('#id_name').val(), route: x, csrfmiddlewaretoken: '{{ csrf_token }}'},
+          datatype: 'json',
+          success: function(data)
+          {
+            console.info(data);
+          }
+        }).done(function (data) {
+          if (data.success) {
+            window.location.href = data.url;
+          }
+        });
+      }
+      else {
+        alert('create a route');
+      }
+    }
+    })
+  })
+
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+<form id="form" method="post">{% csrf_token %}
+  <div class="row">
+    <div class="col-lg-12">
+      {{ form.as_p }}
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-12">
+        <div id="map" style="width:100%;height:500px;"></div>
+      </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-lg-12">
+      {% if form.instance.pk %}
+        <input type="button" class="btn btn-warning" id="reset" name="Reset polygon" value="Reset route" />
+      {% endif %}
+      <input class="btn btn-primary pull-right" type="submit" value="{% if form.instance.pk %}Update {% else %}Save {% endif %}" />
+    </div>
+  </div>
+</form>
+{% endblock %}
