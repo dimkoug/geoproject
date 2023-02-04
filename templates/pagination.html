@@ -1,0 +1,71 @@
+{% if is_paginated %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if page_obj.number != 1  %}
+        <li class="page-item"><a class="page-link" href="?page={{ 1 }}" style="font-size:0.8rem;">First Page</a></li>
+    {% endif %}
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+    </li>
+    {% endif %}
+    {% for i in pages %}
+      {% if page_obj.number == i %}
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+    </li>
+    {% else %}
+      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+    </li>
+    {% endif %}
+    {% if page_obj.number != page_obj.paginator.num_pages %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" style="font-size:0.8rem;">Last Page</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+{% if data.has_other_pages %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if data.number != 1  %}
+          <li class="page-item"><a class="page-link" href="?page={{ 1 }}">First Page</a></li>
+      {% endif %}
+      {% if data.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ data.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+      </li>
+      {% endif %}
+      {% for i in pages %}
+        {% if data.number == i %}
+      <li class="page-item active" aria-current="page">
+        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+      </li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if data.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ data.next_page_number }}">&raquo;</a></li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+      </li>
+      {% endif %}
+      {% if data.number != data.paginator.num_pages %}
+      <li class="page-item"><a class="page-link" href="?page={{ data.paginator.num_pages }}">Last Page</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

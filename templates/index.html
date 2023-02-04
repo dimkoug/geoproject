@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block scripts %}
+<script src="{% static 'js/map/index.js' %}"></script>
+
+{% endblock scripts %}
+
+
+
+{% block content %}
+
+{% include 'partials/spinner_partial.html' %}
+
+
+<div class="row py-2">
+    <div class="col-6">
+        <div class="row">
+            {% for location in locations %}
+            <div class="col-4 py-2">
+                <div class="card rounded shadow-lg" >
+                    <img src="{% static 'images/default.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{location.name}}</h5>
+                      <a href="#" data-id="{{location.id}}"  data-url="/world/get_location_geojson" class="point"><i class="bi bi-pin-map-fill"></i></a>
+                      <a href="{% url 'world:location-detail' location.id %}"><i class="bi bi-info-square"></i></a>
+                    </div>
+                  </div>
+       
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="col-6">
+        <div id="map-canvas" style="width:100%;height: 660px;"></div>
+
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -1,7 +1,13 @@
 env
+venv
+.env
+.venv
 public
 data
 settings_local.py
 __pycache__
 *.pyc
 debug.log
+*.whl
+*.sqlite3
+migrations

@@ -1,0 +1,37 @@
+body,html {
+    background-color:#f0f0f0;
+}
+
+.wrapper {
+    background-color:#ffffff;
+}
+
+
+div[class*="mega-menu-container-"]{
+    z-index:100;
+    position:fixed;
+    width:100%;
+    height: 40rem;
+    top:3.5rem;
+    left:0px;
+    right:0px;
+    min-width: 100%;
+    border: 1px solid #f0f0f0;
+    background-color: #f0f0f0;
+     min-height: 40rem;
+    overflow-y: scroll;
+  }
+
+div[class*="mega-menu-container-"] a {
+font-size: 0.8rem;
+padding:0px;
+margin:0px;
+line-height: 0px;
+color: #0f0f0f;
+text-decoration: none;
+}
+
+div[class*="mega-menu-container-"] a:hover{
+color:#f0f0f0;
+background-color: #0f0f0f;
+}

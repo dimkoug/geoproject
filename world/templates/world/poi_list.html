@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load core %}
+
+
+{% block content %}
+  <div class="row py-2">
+    <div class="col-lg-12">
+      <h1 style="text-align:center;">Poi List</h1>
+
+    </div>
+  </div>
+  <div class="row py-2">
+    <div class="col-lg-12">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <a class="btn btn-primary pull-right" href="{% get_url 'create' %}?geo_type=point"><i class="fa fa-plus" aria-hidden="true"></i>Add point</a>
+      <a class="btn btn-primary pull-right" href="{% get_url 'create' %}?geo_type=polygon"><i class="fa fa-plus" aria-hidden="true"></i>Add Polygon</a>
+      <a class="btn btn-primary pull-right" href="{% get_url 'create' %}?geo_type=linestring"><i class="fa fa-plus" aria-hidden="true"></i>Add route</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Pk</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>{{object.pk}}</td>
+            <td>{{object.name}}</td>
+            <td>{{object.category}}</td>
+            <td>
+              <a class="btn btn-warning" href="{% get_url 'update' object %}?geo_type={% get_geo_type object %}"><i class="bi bi-pencil-square"></i></a>
+              <a class="btn btn-danger" href="{% get_url 'delete' object %}"><i class="bi bi-x"></i></a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" style="text-align:center;">No data</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <div class="row">
+    {% include 'pagination.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+<script>
+$(document).ready(function(){
+  var shape_coordinates = [];
+  var x = [];
+  var mapOptions = {
+    center: new google.maps.LatLng(37.950902,23.641103),
+    zoom: 12,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+
+  };
+  map = new google.maps.Map(document.getElementById("map"), mapOptions);
+  function addPoint(e) {
+      shape.setMap(map);
+      vertices= shape.getPath();
+      vertices.push(e.latLng);
+      shape_coordinates.push(e.latLng);
+  }
+  shape = new google.maps.Polygon({
+      editable: true,
+      strokeOpacity: 0.8,
+      strokeWeight: 1,
+      fillOpacity: 0.4
+  });
+  google.maps.event.addListener(map,'click',addPoint);
+
+  {% if form.instance.pk %}
+    shape.setOptions({ editable: false });
+    google.maps.event.clearListeners(map, 'click');
+      var geo = {{geom}};
+      for (var i = 0; i < geo.features.length; i++){
+        map.data.addGeoJson(geo.features[i]);
+      }
+      var bounds = new google.maps.LatLngBounds();
+    map.data.forEach(function(feature){
+      feature.getGeometry().forEachLatLng(function(latlng){
+         bounds.extend(latlng);
+      });
+    });
+    map.data.setStyle({
+      fillColor: '#f0f0f0'
+    });
+    map.fitBounds(bounds);
+
+    $('#reset').on('click', function(){
+      shape.setOptions({ editable: true });
+      google.maps.event.addListener(map,'click',addPoint);
+      if(map.data){
+        map.data.forEach(function (feature) {
+          map.data.remove(feature);
+        });
+      }
+    })
+  {% endif %}
+
+
+  $("#form").on('submit', function(e){
+    e.preventDefault();
+    if(typeof vertices != 'undefined'){
+      a=JSON.stringify(shape_coordinates);
+      data = {name: $('#id_name').val(),category: $('#id_category').val(), polygon: x, csrfmiddlewaretoken: '{{ csrf_token }}',geo_type: '{{geo_type}}'}
+      alert(data)
+      var c=JSON.parse(a);
+      vertices.forEach(function(xy, i) {
+        x.push(xy.lng()+" "+xy.lat());
+      });
+      shape.setMap(map);
+      alert(x);
+      if(x.length>0){
+        $.ajax({
+          {% if form.instance.pk %}
+            url: '{% url "world:poi-update" form.instance.pk %}',
+          {% else %}
+            url: '.',
+          {% endif %}
+          type: 'POST',
+          data: data,
+          datatype: 'json',
+          success: function(data)
+          {
+            console.info(data);
+          }
+        }).done(function (data) {
+          if (data.success) {
+            window.location.href = data.url;
+          }
+        });
+      }
+      else {
+        alert('create a polygon');
+      }
+    }
+    })
+  })
+
+
+</script>
+

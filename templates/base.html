@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap5/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap5/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <title>Document</title>
+</head>
+<body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'index' %}">Django Geo Project</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#" id="mega-menu-1">Categories</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Menu
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'world:poi-list' %}">Poi List</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid wrapper mega-menu-container-1">
+        <div class="row">
+          <div class="col-2">
+            <div><a href="{% url 'world:polygon' %}">Polygon</a></div>
+            <div><a href="{% url 'world:route' %}">Route</a></div>
+            
+          </div>
+          <div class="col-10">
+            <div class="row">
+              {% for category in categories %}
+                <div class="col-2"><a href="{% url 'world:category-detail' category.pk %}">{{category}}</a></div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="container py-2 rounded shadow-lg wrapper content" style="margin-top:4rem;">
+        {% block content %}{% endblock content %}
+      </div>
+    
+
+
+
+
+    <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/django_ajax.js' %}"></script>
+    <script src="{% static 'bootstrap5/js/bootstrap.min.js' %}"></script>
+    <script  type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp&key={{GOOGLE_MAPS_KEY}}"></script>
+    <script src="{% static 'js/map/markerclusterer.js' %}"></script>
+    <script src="{% static 'js/megamenu.js' %}"></script>
+
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% load i18n %}
+<form action="" class="js-category-create-form" method="get">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h5 class="modal-title">Search Category</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body row">
+    {% for field in form.visible_fields %}
+      <div class="form-group col-md-6 col-xs-6 {% if field.errors %}has-error{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{field}}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    {% for field in form.hidden_fields %}
+      <div style="display:none;">{{ field }}</div>
+    {% endfor %}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <input type="submit" class="btn btn-primary" name='modal_category' value="{% trans "Search Category" %}"></input>
+  </div>
+</form>

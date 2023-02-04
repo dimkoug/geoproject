@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static  %}
+{% block title %}
+  Route function
+{% endblock %}
+
+{% block scripts %}
+<script async src="{% static 'js/map/route.js' %}"></script>
+<script src="{% static 'js/map/populate_markers.js' %}"></script>
+{% endblock scripts %}
+
+{% block content %}
+
+{% include 'partials/spinner_partial.html' %}
+
+<div class="container-fluid py-4 shadow rounded" style="margin-top:4rem;background-color:#ffffff;">
+  <div class="modal" id='category-modal' tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Categories</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row py-2">
+    <div class="col">
+          <p id="helpBlock" class="help-block">Create a route by clicking to the map</p>
+    </div>
+
+  </div>
+  <div class="row py-2">
+    <div class="col">
+      <div id="loading">
+        <span style="vertical-align:middle">Loading</span>
+        <img class="back" src="{% static 'images/ajax-loader.gif' %}" alt="">
+      </div>
+    </div>
+    <div id="res" class="alert alert-warning alert-dismissible" role="alert">
+      No available points of interest
+    </div>
+    <div id="result" >
+      <span style="vertical-align:middle">Create a route in the map</span>
+    </div>
+  </div>
+  <hr>
+  <div class="row py-2">
+    <div class="col">
+      <div id="map-canvas" style="width:100%;height: 660px;"></div>
+    </div>
+  </div>
+  <div class="row py-2">
+    <div class="col-6">
+      <button type="button" id="edit" class="btn btn-primary"><i class="fas fa-edit" aria-hidden="true"></i>
+      Edit</button>
+    </div>
+    <div class="col-6">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button type="button" id="route" class="btn btn-primary float-right"><i class="fas fa-search" aria-hidden="true"></i>
+    Search Route</button>
+  </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block scripts %}
+<script src="{% static 'js/map/index.js' %}"></script>
+
+{% endblock scripts %}
+
+
+
+{% block content %}
+
+<div class="row py-2">
+    <div class="col-12">
+        <h2>{{object}}</h2>
+    </div>
+</div>
+
+
+{% include 'partials/spinner_partial.html' %}
+
+<div class="row py-2">
+    <div class="col-6">
+        <div class="row">
+            {% for obj in data %}
+            <div class="col-4 py-2">
+                <div class="card rounded shadow-lg" >
+                    <img src="{% static 'images/default.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{obj.name}}</h5>
+                      <a href="#" data-id="{{obj.id}}"  data-url="{% if not poi %}/world/get_location_geojson{% else %}/world/get_poi_geojson{% endif %}" class="point"><i class="bi bi-pin-map-fill"></i></a>
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="row">
+            {% include 'pagination.html' %}
+        </div>
+       
+    </div>
+    <div class="col-6">
+        <div id="map-canvas" style="width:100%;height: 660px;"></div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}
