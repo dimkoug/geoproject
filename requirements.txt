@@ -24,7 +24,7 @@ cryptography==39.0.0
 cssselect==1.2.0
 decorator==5.1.1
 dill==0.3.6
-Django==4.1.6
+Django==4.1.7
 django-admin-sortable2==2.1.4
 django-cache-machine==1.2.0
 django-celery==3.1.17
